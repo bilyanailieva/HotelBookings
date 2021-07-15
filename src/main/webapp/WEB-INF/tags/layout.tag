@@ -1,5 +1,6 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ attribute name="title" required="true" rtexprvalue="true" %>
+<%@ attribute name="header" fragment="true" %>
 <%@ attribute name="content" fragment="true" %>
 <!doctype html>
 <html>
@@ -8,10 +9,13 @@
 	<title>${title }</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 	<link rel="stylesheet" href="../assets/css/base/index.scss" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@event-calendar/build/event-calendar.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/@event-calendar/build/event-calendar.min.js"></script>
 </head>
 <body>
 
-	<a href="/index.jsp">Home</a>
+	<a class="test" href="./index.jsp">Home</a>
+	<a class="btn btn-primary">Book Now</a>
 	<br />
 	<jsp:invoke fragment="content"></jsp:invoke>
 	
