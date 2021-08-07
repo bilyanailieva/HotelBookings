@@ -12,7 +12,6 @@
 </head>
 <body>
 <%@ include file="Snippets/header.jsp" %> 
-<%-- <jsp:include page="Snippets/header.jsp" /> --%>
 
 <div class="row">
 	<%@ include file="Snippets/side-menu.jsp" %> 
