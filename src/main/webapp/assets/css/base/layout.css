@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+/* Header Styles */
+
+header .side-menu {
+	position: sticky;
+	top: 0;
+	height: calc(100vh - 48px);
+	padding-top: .5rem;
+	overflow-x: hidden;
+	overflow-y: auto;
+	
+}
+
+header .top-menu-bar {
+	background-color: white;
+	width: 100%;
+}
+
+header .dropdown-toggle {
+	color: black !important;
+}
+
+main {
+	min-height: calc(100vh - 48px);
+}

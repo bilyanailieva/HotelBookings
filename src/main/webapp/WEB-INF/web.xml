@@ -11,6 +11,14 @@
         <servlet-name>LoginController</servlet-name>
          <servlet-class>com.bookings.mvc.controller.LoginController</servlet-class> 
     </servlet>
+    <servlet>
+        <servlet-name>HotelController</servlet-name>
+         <servlet-class>com.bookings.mvc.controller.HotelController</servlet-class> 
+    </servlet>
+    <servlet>
+        <servlet-name>RoomTypeController</servlet-name>
+         <servlet-class>com.bookings.mvc.controller.RoomTypeController</servlet-class> 
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterController</servlet-name>
         <url-pattern>/RegisterController</url-pattern>
@@ -18,6 +26,14 @@
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/office/welcome</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HotelController</servlet-name>
+        <url-pattern>/office/hotelsettings</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RoomTypeController</servlet-name>
+        <url-pattern>/office/roomtypes</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -1,5 +1,17 @@
-<jsp:include page="Snippets/header.jsp" /> 
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
+<%@page import="com.bookings.mvc.bean.RoomTypeBean"%>
+<%@page import="java.util.ArrayList"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>   
+<!doctype html>
+<html>
+<head>
+	<%@ include file="Snippets/head.jsp" %>  
+	<title>Settings</title>
+</head>
+<body>
+<%@ include file="Snippets/header.jsp" %> 
+<div class="row">
+<%@ include file="Snippets/side-menu.jsp" %> 
 <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
 <h2>
     <% 
@@ -33,5 +45,7 @@
 
 </main>
 </div>
-</div>
-<jsp:include page="Snippets/footer.jsp" /> 
+<%@ include file="Snippets/footer.jsp" %>  
+
+</body>
+</html>
