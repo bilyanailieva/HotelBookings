@@ -1,3 +1,7 @@
+import pkg from 'svelte-gantt';
+const { SvelteGantt, SvelteGanttTable } = pkg;
+
+
 /*import "core-js/stable";
 import "regenerator-runtime/runtime";
 import $ from 'jquery';
@@ -22,6 +26,9 @@ console.log("Hello!");
         }
     }
 });*/
+
+
+
 
 
 

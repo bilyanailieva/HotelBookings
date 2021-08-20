@@ -8,6 +8,28 @@ public class RoomBean {
 	private boolean extra_bed; 
 	private boolean baby_crib; 
 	private boolean handycap;
+	
+	public RoomBean() {
+    }
+ 
+    public RoomBean(int id) {
+        this.id = id;
+    }
+ 
+    public RoomBean(int id, int rtid, String name, boolean first_floor, boolean extra_bed, boolean baby_crib, boolean handycap) {
+        this(rtid, name, first_floor, extra_bed, baby_crib, handycap);
+        this.id = id;
+    }
+     
+    public RoomBean(int rtid, String name, boolean first_floor, boolean extra_bed, boolean baby_crib, boolean handycap) {
+        this.rtid = rtid;
+        this.name = name; 
+        this.first_floor = first_floor;
+        this.extra_bed = extra_bed;
+        this.baby_crib = baby_crib;
+        this.handycap = handycap;
+    }
+    
 	public int getId() {
 		return id;
 	}

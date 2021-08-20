@@ -1,77 +1,153 @@
 package com.bookings.mvc.controller;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import java.sql.SQLException;
+import java.util.List;
+ 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.bookings.mvc.bean.HotelBean;
+import com.bookings.mvc.bean.RoomBean;
+import com.bookings.mvc.bean.RoomTypeBean;
 import com.bookings.mvc.dao.HotelDao;
-
+import com.bookings.mvc.dao.RoomDao;
+import com.bookings.mvc.dao.RoomTypeDao;
+ 
 /**
- * Servlet implementation class HotelController
+ * ControllerServlet.java
+ * This servlet acts as a page controller for the application, handling all
+ * requests from the user.
+ * @author www.codejava.net
  */
 public class HotelController extends HttpServlet {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+    private HotelDao hotelDao;
+    private RoomTypeDao roomTypeDao;
+ 
+    public void init() {
+    	String url = getServletContext().getInitParameter("url");
+		String name = getServletContext().getInitParameter("name");
+		String pass = getServletContext().getInitParameter("pass");
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException 
-    {
-        
-        if(request.getParameter("add_hotel")!=null) //check button click event not null from register.jsp page button
-        {
-            String hotel_name=request.getParameter("hotel_name");
-            String room_count=request.getParameter("room_count");
-            String season_start=request.getParameter("season_start");  //get all textbox name from register.jsp page
-            String season_end=request.getParameter("season_end");
-            String dogs=request.getParameter("dogs");
-            
-            HotelBean hotelBean=new HotelBean(); //this class contain  seeting up all received values from register.jsp page to setter and getter method for application require effectively
-            
-            hotelBean.setHotel_name(hotel_name);
-            hotelBean.setRoom_count(Integer.parseInt(room_count));
-			/*
-			 * DateFormat format = new SimpleDateFormat("MM-dd-yyyy"); Date finalStartDate =
-			 * null; try { finalStartDate = format.parse(season_start);
-			 * hotelBean.setStart_season(finalStartDate);
-			 * System.out.println(finalStartDate); } catch (ParseException ex) {
-			 * System.out.println(ex.getMessage()); } Date finalEndDate = null; try {
-			 * finalEndDate = format.parse(season_end);
-			 * hotelBean.setEnd_season(finalEndDate); System.out.println(finalEndDate); }
-			 * catch (ParseException ex) { System.out.println(ex.getMessage()); }
-			 */
-            hotelBean.setStart_season(season_start);
-            hotelBean.setEnd_season(season_end);
-            hotelBean.setDogs(Boolean.parseBoolean(dogs));
-           
-            HotelDao hoteldao=new HotelDao(); //this class contain main logic to perform function calling and database operation
-            
-            String registerValidate=hoteldao.authorizeHotelRegister(hotelBean); //send registerBean object values into authorizeRegister() function in RegisterDao class
-            
-            if(registerValidate.equals("SUCCESS HOTEL REGISTER")) //check calling authorizeRegister() function receive "SUCCESS REGISTER" string message after redirect to index.jsp page
-            {
-                request.setAttribute("RegiseterSuccessMsg",registerValidate); //apply register successfully message "RegiseterSuccessMsg"
-                RequestDispatcher rd=request.getRequestDispatcher("/office/settings.jsp"); //redirect to index.jsp page
-                rd.forward(request, response);
+		hotelDao = new HotelDao(url, name, pass);
+		roomTypeDao = new RoomTypeDao(url, name, pass);
+    }
+ 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doGet(request, response);
+    }
+ 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getServletPath();
+ 
+        try {
+            switch (action) {
+            case "/office/hotelsettings/new-hotel":
+            	//listRoomTypes(request, response);
+                showNewHotelForm(request, response);
+                break;
+            case "/office/hotelsettings/insert-hotel":
+                insertHotel(request, response);
+                break;
+            case "/office/hotelsettings/delete-hotel":
+                deleteHotel(request, response);
+                break;
+            case "/office/hotelsettings/edit-hotel":
+                //listRoomTypes(request, response);
+                showEditHotelForm(request, response);
+                break;
+            case "/office/hotelsettings/update-hotel":
+                updateHotel(request, response);
+                break;
+            default:
+            	//listRoomTypes(request, response);
+            	listHotels(request, response);
+                break;
             }
-            else
-            {
-                request.setAttribute("RegisterErrorMsg",registerValidate); // apply register error message "RegiseterErrorMsg"
-                RequestDispatcher rd=request.getRequestDispatcher("/office/settings.jsp"); //show error same page register.jsp page
-                rd.include(request, response);
-            }
+        } catch (SQLException ex) {
+            throw new ServletException(ex);
         }
     }
+ 
+    private void listHotels(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        List<HotelBean> listHotel = hotelDao.listAllHotels();
+        request.setAttribute("listHotel", listHotel);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("settings.jsp");
+        dispatcher.forward(request, response);
+        
+    }
+ 
+    private void showNewHotelForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("hotel_form.jsp");
+        dispatcher.forward(request, response);
+    }
+ 
+    private void showEditHotelForm(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("hid"));
+        HotelBean existingHotel = hotelDao.getHotel(id);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("hotel_form.jsp");
+        request.setAttribute("hotel", existingHotel);
+        dispatcher.forward(request, response);
+ 
+    }
+ 
+    private void insertHotel(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+    	String hotel_name = request.getParameter("hotel_name");
+    	int rc = Integer.parseInt(request.getParameter("room_count"));
+    	String start_season = request.getParameter("start_season");
+    	String end_season = request.getParameter("end_season");
+        Boolean dogs = false;
+        if (request.getParameter("dogs") != null) {
+        	dogs = true;
+        }
+        HotelBean newHotel = new HotelBean(hotel_name, rc, start_season, end_season, dogs);
+        hotelDao.insertHotel(newHotel);
+        response.sendRedirect("list-hotel");
+    }
+ 
+    private void updateHotel(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+        int hid = Integer.parseInt(request.getParameter("hid"));
+        String hotel_name = request.getParameter("hotel_name");
+        int rc = Integer.parseInt(request.getParameter("room_count"));
+        String start_season = request.getParameter("start_season");
+        String end_season = request.getParameter("end_season");
+        Boolean dogs = false;
+        
+        if (request.getParameter("dogs") != null) {
+        	dogs = true;
+        }
+        HotelBean hotel = new HotelBean(hid, hotel_name, rc, start_season, end_season, dogs);
+        hotelDao.updateHotel(hotel);
+        response.sendRedirect("list-hotel");
+    }
+ 
+    private void deleteHotel(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+        int hid = Integer.parseInt(request.getParameter("hid"));
+ 
+        HotelBean hotel = new HotelBean(hid);
+        hotelDao.deleteHotel(hotel);
+        response.sendRedirect("list-hotel");
+ 
+    }
+    
+	/*
+	 * private void listRoomTypes(HttpServletRequest request, HttpServletResponse
+	 * response) throws SQLException, IOException, ServletException {
+	 * List<RoomTypeBean> listRoomType = roomTypeDao.listAllRoomTypes();
+	 * request.setAttribute("listRoomTypes", listRoomType); RequestDispatcher
+	 * dispatcher = request.getRequestDispatcher("room_form.jsp");
+	 * dispatcher.include(request, response); }
+	 */
 }

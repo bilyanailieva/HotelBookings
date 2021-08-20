@@ -1,6 +1,9 @@
 package com.bookings.mvc.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,11 +12,32 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.bookings.mvc.bean.HotelBean;
 import com.bookings.mvc.bean.LoginBean;
+import com.bookings.mvc.bean.RoomBean;
+import com.bookings.mvc.bean.RoomTypeBean;
+import com.bookings.mvc.dao.HotelDao;
 import com.bookings.mvc.dao.LoginDao;
+import com.bookings.mvc.dao.RoomDao;
+import com.bookings.mvc.dao.RoomTypeDao;
 
 public class LoginController extends HttpServlet 
 {
+	private static final long serialVersionUID = 1L;
+    private RoomDao roomDao;
+    private RoomTypeDao roomTypeDao;
+    private HotelDao hotelDao;
+ 
+    public void init() {
+    	String url = getServletContext().getInitParameter("url");
+		String name = getServletContext().getInitParameter("name");
+		String pass = getServletContext().getInitParameter("pass");
+
+		roomDao = new RoomDao(url, name, pass);
+		roomTypeDao = new RoomTypeDao(url, name, pass);
+		hotelDao = new HotelDao(url, name, pass);
+    }
+    
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException 
     {
@@ -45,6 +69,36 @@ public class LoginController extends HttpServlet
                 rd.include(request, response);
             }
         }
+        doGet(request, response);
+    }
+    
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getServletPath();
+ 
+        try {
+            switch (action) {
+            case "/office/welcome/list":
+            	sendRoomsToCalendar(request, response);
+                break;
+            default:
+            	sendRoomsToCalendar(request, response);
+                break;
+            }
+        } catch (SQLException ex) {
+            throw new ServletException(ex);
+        }
     }
 
+    private void sendRoomsToCalendar(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+    	List<RoomBean> listRoom = roomDao.listAllRooms();
+        List<RoomTypeBean> listRoomType = roomTypeDao.listAllRoomTypes();
+        List<HotelBean> listHotel = hotelDao.listAllHotels();
+        request.setAttribute("listRoomTypes", listRoomType);
+        request.setAttribute("listRoom", listRoom);
+        request.setAttribute("listHotel", listHotel);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("../welcome.jsp");
+        dispatcher.forward(request, response);
+    }
 }

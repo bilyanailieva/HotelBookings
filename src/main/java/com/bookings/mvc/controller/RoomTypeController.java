@@ -1,138 +1,122 @@
 package com.bookings.mvc.controller;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.sql.SQLException;
 import java.util.List;
-
+ 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.bookings.mvc.bean.RoomTypeBean;
 import com.bookings.mvc.dao.RoomTypeDao;
-
+ 
 /**
- * Servlet implementation class HotelController
+ * ControllerServlet.java
+ * This servlet acts as a page controller for the application, handling all
+ * requests from the user.
+ * @author www.codejava.net
  */
 public class RoomTypeController extends HttpServlet {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	public RoomTypeController() {
-        super();
-        // TODO Auto-generated constructor stub
+    private static final long serialVersionUID = 1L;
+    private RoomTypeDao roomTypeDao;
+ 
+    public void init() {
+    	String url = getServletContext().getInitParameter("url");
+		String name = getServletContext().getInitParameter("name");
+		String pass = getServletContext().getInitParameter("pass");
+
+		roomTypeDao = new RoomTypeDao(url, name, pass);
+ 
     }
-
-	protected void insertRoomType(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
-		if (request.getParameter("add_type") != null) // check button click event not null from register.jsp page button
-		{
-			String type = request.getParameter("room_type");
-
-			RoomTypeBean roomTypeBean = new RoomTypeBean(); // this class contain seeting up all received values from
-															// register.jsp page to setter and getter method for
-															// application require effectively
-
-			roomTypeBean.setType(type);
-
-			RoomTypeDao roomTypeDao = new RoomTypeDao(); // this class contain main logic to perform function calling
-															// and database operation
-
-			String insertValidate = roomTypeDao.addRoomType(roomTypeBean); // send registerBean object values into
-																			// authorizeRegister() function in
-																			// RegisterDao class
-
-			if (insertValidate.equals("SUCCESSFULLY ADDED ROOM TYPE")) // check calling authorizeRegister() function
-																		// receive "SUCCESS REGISTER" string message
-																		// after redirect to index.jsp page
-			{
-				request.setAttribute("RegiseterSuccessMsg", insertValidate); // apply register successfully message
-																				// "RegiseterSuccessMsg"
-				RequestDispatcher rd = request.getRequestDispatcher("/office/welcome.jsp"); // redirect to index.jsp
-																							// page
-				rd.forward(request, response);
-			} else {
-				request.setAttribute("RegisterErrorMsg", insertValidate); // apply register error message
-																			// "RegiseterErrorMsg"
-				RequestDispatcher rd = request.getRequestDispatcher("/office/settings.jsp"); // show error same page
-																								// register.jsp page
-				rd.include(request, response);
-			}
-		}
-	}
-
-	protected void checkIfRoomTypeExists(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		if(request.getParameter("room_type") != null) {
-		String room_type = request.getParameter("room_type");
-
-		RoomTypeBean roomTypeBean = new RoomTypeBean(); // this class contain seeting up all received values from
-														// register.jsp page to setter and getter method for application
-														// require effectively
-
-		roomTypeBean.setType(room_type);
-
-		RoomTypeDao roomTypeDao = new RoomTypeDao();
-
-		String selectValidate = roomTypeDao.checkIfExists(roomTypeBean); // send registerBean object values into
-																			// authorizeRegister() function in
-																			// RegisterDao class
-
-		if (selectValidate.equals("exists")) {
-			String message = "Room Type already exists!";
-
-			response.setContentType("text/plain");
-			response.getWriter().write(message);
-		}
-	}
-	}
-	
-	public void seeAllRoomTypes(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		if(request.getParameter("all_room_types") != null) 
-		{
-			RoomTypeDao roomTypeDao = new RoomTypeDao();
-	        List<RoomTypeBean> roomTypesList = roomTypeDao.getRoomTypes();
-	        
-	        request.setAttribute("roomTypesList", roomTypesList);
-	        
-	        RequestDispatcher rd = request.getRequestDispatcher("/office/settings.jsp");
-			rd.forward(request, response);
-		}
-	}
-	
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-    @Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-    	checkIfRoomTypeExists(request, response);
-    	//seeAllRoomTypes(request, response);
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-    @Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-    	insertRoomType(request, response);
-    
-	}
+ 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doGet(request, response);
+    }
+ 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getServletPath();
+ 
+        try {
+            switch (action) {
+            case "/office/roomtypes/new":
+                showNewForm(request, response);
+                break;
+            case "/office/roomtypes/insert":
+                insertRoomType(request, response);
+                break;
+            case "/office/roomtypes/delete":
+                deleteRoomType(request, response);
+                break;
+            case "/office/roomtypes/edit":
+                showEditForm(request, response);
+                break;
+            case "/office/roomtypes/update":
+                updateRoomType(request, response);
+                break;
+            default:
+            	listRoomTypes(request, response);
+                break;
+            }
+        } catch (SQLException ex) {
+            throw new ServletException(ex);
+        }
+    }
+ 
+    protected void listRoomTypes(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        List<RoomTypeBean> listRoomType = roomTypeDao.listAllRoomTypes();
+        request.setAttribute("listRoomTypes", listRoomType);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("room_types_settings.jsp");
+        dispatcher.forward(request, response);
+    }
+ 
+    private void showNewForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("room_type_update.jsp");
+        dispatcher.forward(request, response);
+    }
+ 
+    private void showEditForm(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        RoomTypeBean existingRoomType = roomTypeDao.getRoomType(id);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("room_type_update.jsp");
+        request.setAttribute("room_type", existingRoomType);
+        dispatcher.forward(request, response);
+ 
+    }
+ 
+    private void insertRoomType(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+        String room_type = request.getParameter("room_type");
+ 
+        RoomTypeBean newRoomType = new RoomTypeBean(room_type);
+        roomTypeDao.insertRoomType(newRoomType);
+        response.sendRedirect("list");
+    }
+ 
+    private void updateRoomType(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        String room_type = request.getParameter("room_type");
+ 
+        RoomTypeBean roomType = new RoomTypeBean(id, room_type);
+        roomTypeDao.updateRoomType(roomType);
+        response.sendRedirect("list");
+    }
+ 
+    private void deleteRoomType(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+ 
+        RoomTypeBean roomType = new RoomTypeBean(id);
+        roomTypeDao.deleteRoomType(roomType);
+        response.sendRedirect("list");
+ 
+    }
 }

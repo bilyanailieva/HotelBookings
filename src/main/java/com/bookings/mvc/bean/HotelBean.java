@@ -10,6 +10,25 @@ public class HotelBean {
 	private String end_season;
 	private Boolean dogs;
 	
+	public HotelBean() {
+    }
+ 
+    public HotelBean(int hid) {
+        this.hid = hid;
+    }
+ 
+    public HotelBean(int hid, String hotel_name, int room_count, String start_season, String end_season, Boolean dogs) {
+        this(hotel_name, room_count, start_season, end_season, dogs);
+        this.hid = hid;
+    }
+     
+    public HotelBean(String hotel_name, int room_count, String start_season, String end_season, Boolean dogs) {
+        this.hotel_name = hotel_name;
+        this.room_count = room_count; 
+        this.start_season = start_season;
+        this.end_season = end_season;
+        this.dogs = dogs;
+    }
 	
 	public int getHid() {
 		return hid;

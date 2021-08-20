@@ -3,6 +3,20 @@
     <welcome-file-list>
     	<welcome-file>/user/index.jsp</welcome-file>
     </welcome-file-list>
+    <context-param>
+        <param-name>url</param-name>
+        <param-value>jdbc:mysql://localhost:3306/bookings</param-value>
+    </context-param>
+ 
+    <context-param>
+        <param-name>name</param-name>
+        <param-value>root</param-value>
+    </context-param>
+ 
+    <context-param>
+        <param-name>pass</param-name>
+        <param-value>misq1.r007</param-value>
+    </context-param>
     <servlet>
         <servlet-name>RegisterController</servlet-name>
         <servlet-class>com.bookings.mvc.controller.RegisterController</servlet-class>
@@ -19,6 +33,14 @@
         <servlet-name>RoomTypeController</servlet-name>
          <servlet-class>com.bookings.mvc.controller.RoomTypeController</servlet-class> 
     </servlet>
+    <servlet>
+        <servlet-name>RoomController</servlet-name>
+         <servlet-class>com.bookings.mvc.controller.RoomController</servlet-class> 
+    </servlet>
+    <servlet>
+        <servlet-name>PriceController</servlet-name>
+         <servlet-class>com.bookings.mvc.controller.PriceController</servlet-class> 
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterController</servlet-name>
         <url-pattern>/RegisterController</url-pattern>
@@ -26,15 +48,50 @@
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/office/welcome</url-pattern>
+        <url-pattern>/office/welcome/list</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>HotelController</servlet-name>
-        <url-pattern>/office/hotelsettings</url-pattern>
+        <url-pattern>/office/hotelsettings/</url-pattern>
+        <url-pattern>/office/hotelsettings/new-hotel</url-pattern>
+        <url-pattern>/office/hotelsettings/insert-hotel</url-pattern>
+        <url-pattern>/office/hotelsettings/delete-hotel</url-pattern>
+        <url-pattern>/office/hotelsettings/edit-hotel</url-pattern>
+        <url-pattern>/office/hotelsettings/update-hotel</url-pattern>
+        <url-pattern>/office/hotelsettings/list-hotel</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RoomTypeController</servlet-name>
-        <url-pattern>/office/roomtypes</url-pattern>
+        <url-pattern>/office/roomtypes/</url-pattern>
+        <url-pattern>/office/roomtypes/new</url-pattern>
+        <url-pattern>/office/roomtypes/list</url-pattern>
+        <url-pattern>/office/roomtypes/insert</url-pattern>
+        <url-pattern>/office/roomtypes/delete</url-pattern>
+        <url-pattern>/office/roomtypes/edit</url-pattern>
+        <url-pattern>/office/roomtypes/update</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RoomController</servlet-name>
+        <url-pattern>/office/rooms/</url-pattern>
+        <url-pattern>/office/rooms/new</url-pattern>
+        <url-pattern>/office/rooms/list</url-pattern>
+        <url-pattern>/office/rooms/insert</url-pattern>
+        <url-pattern>/office/rooms/delete</url-pattern>
+        <url-pattern>/office/rooms/edit</url-pattern>
+        <url-pattern>/office/rooms/update</url-pattern>
+        <url-pattern>/office/calendar</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PriceController</servlet-name>
+        <url-pattern>/office/roomtypes/prices/</url-pattern>
+        <url-pattern>/office/roomtypes/newprice</url-pattern>
+        <url-pattern>/office/roomtypes/list-prices</url-pattern>
+        <url-pattern>/office/roomtypes/insert-price</url-pattern>
+        <url-pattern>/office/roomtypes/delete-price</url-pattern>
+        <url-pattern>/office/roomtypes/edit-price</url-pattern>
+        <url-pattern>/office/roomtypes/update-price</url-pattern>
+        <url-pattern>/office/roomtypes/view-prices</url-pattern>
+    </servlet-mapping> 
     <session-config>
         <session-timeout>
             60

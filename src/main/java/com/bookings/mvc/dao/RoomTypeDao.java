@@ -12,143 +12,179 @@ import java.util.List;
 import com.bookings.mvc.bean.RoomTypeBean;
 
 public class RoomTypeDao {
-	
+	private String url;
+    private String name;
+    private String pass;
     private Connection con;
-     
-   
-	
-	protected void connect() throws SQLException {
-		String url="jdbc:mysql://localhost:3306/bookings"; //database connection url string
-	    String uname="root"; //database username
-	    String pass="misq1.r007";
-	    
-		if (con == null || con.isClosed()) {
-			try {
-				Class.forName("com.mysql.jdbc.Driver");
-				} catch (ClassNotFoundException e) {
-					throw new SQLException(e);
-					}
-			con = DriverManager.getConnection(
-					url, uname, pass);
-			}
-	}
-
-	protected void disconnect() throws SQLException {
-		if (con != null && !con.isClosed()) {
-			con.close();
-			}
-		}
-	
-	public String addRoomType(RoomTypeBean roomTypeBean) {
-		
-		String type = roomTypeBean.getType();
-		
-		String url="jdbc:mysql://localhost:3306/bookings"; //database connection url string
-	    String uname="root"; //database username
-	    String pass="misq1.r007"; //database password
-	    
-	    try
-        {
-            Class.forName("com.mysql.jdbc.Driver"); //load driver
-            Connection con=DriverManager.getConnection(url,uname,pass); //create connection
-            
-            PreparedStatement pstmt=null; //create statement
-           
-            pstmt=con.prepareStatement("insert into room_types(type) value(?)"); //sql insert query
-            pstmt.setString(1,type);
-            pstmt.executeUpdate(); 
-             
-            pstmt.close(); //close statement
-            
-            con.close(); //close connection
-           
-            return "SUCCESSFULLY ADDED ROOM TYPE"; //if valid return string "SUCCESS REGISTER" 
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-            return "OOPS! AN ISSUE OCCURED"; //if invalid return string "FAIL REGISTER"
-	        
-	}
-	
-	public String checkIfExists(RoomTypeBean roomTypeBean) {
-		
-		 String type = roomTypeBean.getType();
-		
-		 String url="jdbc:mysql://localhost:3306/bookings"; //database connection url string
-		 String uname="root"; //database username
-		 String pass="misq1.r007"; //database password
-
-		 try
-	        {
-	         Class.forName("com.mysql.jdbc.Driver"); //load driver
-	         Connection con=DriverManager.getConnection(url,uname,pass); //create connection
-    		
-           	
-            PreparedStatement ps=null; //create statement
-            
-            ps=con.prepareStatement("select * from room_types where type=?");
-            ps.setString(1,type);  
-            ResultSet rs = ps.executeQuery();
-           	while(rs.next())
-            {
-           			return "exists";
-           	}
-           	
-           	ps.close(); //close statement
-            
-            con.close();
-          //close connection
-        
-     }
-     catch(Exception e)
-     {
-         e.printStackTrace();
-         
-     }
-         return "free";
-	}
-	
-	public List<RoomTypeBean> getRoomTypes() {
-		
-        RoomTypeBean room_type = null;
-        List<RoomTypeBean> list = new ArrayList<RoomTypeBean>();
-
-        String url="jdbc:mysql://localhost:3306/bookings"; //database connection url string
-		String uname="root"; //database username
-		String pass="misq1.r007"; //database password
-		 
-        try {
-        	Class.forName("com.mysql.jdbc.Driver"); //load driver
-	        Connection con=DriverManager.getConnection(url,uname,pass); //create connection
-	        
-	        String query = "select * from room_types";
-	        
-            Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery(query);
-            while (rs.next()) {
-                room_type = new RoomTypeBean();
-                /*Retrieve one employee details 
-                and store it in employee object*/
-                room_type.setId(rs.getInt("id"));
-                room_type.setType(rs.getString("type"));
- 
-                //add each employee to the list
-                list.add(room_type);
-              
-                rs.close();
-                statement.close();
-                con.close();
-                
-                return list;
-                
-            }
-        }
-        catch(Exception e) {
-        	e.printStackTrace();
-        }
-        
-        return list;
+    
+    
+    public RoomTypeDao(String url, String name, String pass) {
+        this.url = url;
+        this.name = name;
+        this.pass = pass;
     }
+     
+    protected void connect() throws SQLException {
+        if (con == null || con.isClosed()) {
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+            } catch (ClassNotFoundException e) {
+                throw new SQLException(e);
+            }
+            con = DriverManager.getConnection(url, name, pass);
+        }
+    }
+    
+    protected void disconnect() throws SQLException {
+        if (con != null && !con.isClosed()) {
+            con.close();
+        }
+    }
+    
+    public boolean insertRoomType(RoomTypeBean room_type) throws SQLException {
+        String sql = "insert into room_types(type) value(?)";
+        connect();
+         
+        PreparedStatement statement = con.prepareStatement(sql);
+        statement.setString(1, room_type.getType());
+         
+        boolean rowInserted = statement.executeUpdate() > 0;
+        statement.close();
+        disconnect();
+        return rowInserted;
+    }
+    
+    public List<RoomTypeBean> listAllRoomTypes() throws SQLException {
+        List<RoomTypeBean> listRoomType = new ArrayList<>();
+         
+        String sql = "select * from room_types order by id";
+         
+        connect();
+         
+        Statement statement = con.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+         
+        while (resultSet.next()) {
+            int id = resultSet.getInt("id");
+            String type = resultSet.getString("type");
+             
+            RoomTypeBean roomType = new RoomTypeBean(id, type);
+            listRoomType.add(roomType);
+        }
+         
+        resultSet.close();
+        statement.close();
+         
+        disconnect();
+         
+        return listRoomType;
+    }
+    
+    public boolean updateRoomType(RoomTypeBean roomType) throws SQLException {
+        String sql = "update room_types set type = ?";
+        sql += " where id = ?";
+        connect();
+         
+        PreparedStatement statement = con.prepareStatement(sql);
+        statement.setString(1, roomType.getType());
+        statement.setInt(2, roomType.getId());
+        
+        
+         
+        boolean rowUpdated = statement.executeUpdate() > 0;
+        statement.close();
+        disconnect();
+        return rowUpdated;     
+    }
+    
+    public RoomTypeBean getRoomType(int id) throws SQLException {
+        RoomTypeBean roomType = null;
+        String sql = "SELECT * FROM room_types WHERE id = ?";
+         
+        connect();
+         
+        PreparedStatement statement = con.prepareStatement(sql);
+        statement.setInt(1, id);
+         
+        ResultSet resultSet = statement.executeQuery();
+         
+        if (resultSet.next()) {
+            String type = resultSet.getString("type");
+             
+            roomType = new RoomTypeBean(id, type);
+        }
+         
+        resultSet.close();
+        statement.close();
+         
+        return roomType;
+    }
+    
+    public boolean deleteRoomType(RoomTypeBean roomType) throws SQLException {
+        String sql = "delete from room_types where id = ?";
+         
+        connect();
+         
+        PreparedStatement statement = con.prepareStatement(sql);
+        statement.setInt(1, roomType.getId());
+         
+        boolean rowDeleted = statement.executeUpdate() > 0;
+        statement.close();
+        disconnect();
+        return rowDeleted;     
+    }
+    
+    
+	/*
+	 * public String checkIfExists(RoomTypeBean roomTypeBean) throws SQLException {
+	 * String room_type = roomTypeBean.getType(); String sql =
+	 * "select * from room_types where type=?";
+	 * 
+	 * try {
+	 * 
+	 * connect(); PreparedStatement ps = con.prepareStatement(sql); // create
+	 * statement ps.setString(1, room_type); ResultSet rs = ps.executeQuery();
+	 * 
+	 * while (rs.next()) {
+	 * 
+	 * return "exists";
+	 * 
+	 * } ps.close(); // close statement
+	 * 
+	 * disconnect(); } catch (Exception e) { e.printStackTrace();
+	 * 
+	 * } // close connection return "free";
+	 * 
+	 * }
+	 */
+	
+	public Boolean checkIfExists(RoomTypeBean roomTypeBean) throws SQLException {
+		 String sql = "select * from room_types where type=?";
+		 connect();
+		 //create statement
+		 
+		 //ps=con.prepareStatement("select * from room_types where type=?");
+		 //ps.setString(1,type); 
+		 PreparedStatement statement = con.prepareStatement(sql);
+	     statement.setString(1, roomTypeBean.getType());
+	     
+	     ResultSet resultSet = statement.executeQuery();
+         
+	        if (resultSet.next()) {
+	        	resultSet.close();
+		        statement.close();
+	            return true;
+	            
+	            
+	        }
+	        else {
+	        	return false;
+	        }
+	        
+	         
+	        
+	         
+	        
+		 }
+
 }
