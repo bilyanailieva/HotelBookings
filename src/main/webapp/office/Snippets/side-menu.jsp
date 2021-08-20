@@ -71,10 +71,19 @@
         </a>
       </li>
 		<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
-		<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
-		<li class="nav-item"><a class="nav-link" href="settings.jsp" aria-current="page"
+		<li class="nav-item"><a class="nav-link" href="/HotelBookings/office/calendar">Calendar</a></li>
+		<li class="nav-item"><a class="nav-link" href="/HotelBookings/office/hotelsettings" aria-current="page"
 			tabindex="-1">
 			<svg class="bi me-2" width="16" height="16"><use xlink:href="#gear-fill"/></svg>
-			Settings</a></li>
+			Settings</a></li>		
+  <a class="nav-link"data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+    Settings
+ </a>
+  <div class="collapse" id="collapseExample">
+    <a class="nav-link" href="/HotelBookings/office/roomtypes">Room Types</a>
+    <a class="nav-link" href="/HotelBookings/office/rooms">Rooms</a>
+    <a class="nav-link" href="/HotelBookings/office/roomtypes/list-prices">Prices</a>
+    <a class="nav-link" href="#">Something else here</a>
+</div>
 	</ul>
 </div>

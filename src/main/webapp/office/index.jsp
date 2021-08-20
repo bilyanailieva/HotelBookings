@@ -8,6 +8,9 @@
 <link rel="stylesheet" href="../assets/css/base/index.scss" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@event-calendar/build/event-calendar.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@event-calendar/build/event-calendar.min.js"></script>
+<link  rel='stylesheet'  href='https://cdn.jsdelivr.net/npm/svelte-gantt@3.0.4-beta/css/svelteGantt.css'>
+<script  src='node_modules/svelte-gantt/index.iife.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
 	<h2 class="welcome-msg">Welcome to <strong>BookARoom</strong>! Your hotel bookings management tool. </h2>
@@ -28,7 +31,6 @@
 		
 		</form>
 		
-		<script src="../assets/js/app.js"></script>
 		<!-- <script>
 		let ec = new EventCalendar(document.getElementById('calendar'), {
 		    view: 'timeGridDay',
@@ -82,5 +84,24 @@
 	        return (norm < 10 ? '0' : '') + norm;
 	    }
 		</script> -->
+		
+		<script>
+		var options = {
+			    /* ... */
+				gantt.$set({ 
+				    from: moment().startOf('week'),
+				    to: moment().endOf('week')
+				});
+			};
+
+			var gantt = new SvelteGantt({ 
+			    // target a DOM element
+			    target: document.getElementById('calendar'), 
+			    // svelte-gantt options
+			    props: options
+			});
+		</script>
+		
+		<script src="https://cdn.jsdelivr.net/npm/svelte-gantt@3.0.4-beta/index.iife.js"></script>
 </body>
 </html>
