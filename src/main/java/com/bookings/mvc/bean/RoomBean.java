@@ -3,6 +3,7 @@ package com.bookings.mvc.bean;
 public class RoomBean {
 	private int id; 
 	private int rtid;
+	//private RoomTypeBean rt;
 	private String name;
 	private boolean first_floor; 
 	private boolean extra_bed; 

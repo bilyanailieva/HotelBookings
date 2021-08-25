@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>BookARoom</title>
+<title>Insert title here</title>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
 	integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
@@ -24,15 +24,33 @@
   <div class="column">
     <h2 class="ui teal image header">
       <div class="content">
-        Log-in to your account
+        Create your account
       </div>
     </h2>
-    <form class="ui large form" action="welcome" method="post">
+    <form class="ui large form" action="login" method="post">
       <div class="ui stacked segment">
+      <div class="field">
+          <div class="ui left icon input">
+            <i class="fas fa-user"></i>
+            <input type="text" name="txt_fname" placeholder="First Name">
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="fas fa-user"></i>
+            <input type="text" name="txt_lname" placeholder="Last Name">
+          </div>
+        </div>
         <div class="field">
           <div class="ui left icon input">
             <i class="fas fa-user"></i>
             <input type="text" name="txt_username" placeholder="Username">
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="fas fa-user"></i>
+            <input type="text" name="txt_role" placeholder="Role">
           </div>
         </div>
         <div class="field">
@@ -49,7 +67,7 @@
     </form>
 
     <div class="ui message">
-      New to us? <a href="register.jsp">Sign Up</a>
+      Already have account? <a href="index.jsp">Sign In</a>
     </div>
   </div>
 </div>

@@ -140,8 +140,8 @@ const rowsFromDB = [
 	    label: 'Item 3',
 	    rowId: '2',
 	    time: {
-	      start: GSTC.api.date('2020-01-15').startOf('day').valueOf(),
-	      end: GSTC.api.date('2020-01-20').endOf('day').valueOf(),
+	      start: GSTC.api.date('2021-01-15').startOf('day').valueOf(),
+	      end: GSTC.api.date('2021-01-20').endOf('day').valueOf(),
 	    },
 	  },
 	];

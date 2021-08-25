@@ -22,8 +22,8 @@
         <servlet-class>com.bookings.mvc.controller.RegisterController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>LoginController</servlet-name>
-         <servlet-class>com.bookings.mvc.controller.LoginController</servlet-class> 
+        <servlet-name>UserController</servlet-name>
+         <servlet-class>com.bookings.mvc.controller.UserController</servlet-class> 
     </servlet>
     <servlet>
         <servlet-name>HotelController</servlet-name>
@@ -46,8 +46,9 @@
         <url-pattern>/RegisterController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>LoginController</servlet-name>
+        <servlet-name>UserController</servlet-name>
         <url-pattern>/office/welcome</url-pattern>
+        <url-pattern>/office/login</url-pattern>
         <url-pattern>/office/welcome/list</url-pattern>
     </servlet-mapping>
     <servlet-mapping>

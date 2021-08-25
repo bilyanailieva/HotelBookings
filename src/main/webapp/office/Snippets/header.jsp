@@ -29,7 +29,7 @@
         <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="#">Account Settings</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="./logout.jsp">Log Out</a>
+          <a class="dropdown-item" href="/HotelBookings/office/logout.jsp">Log Out</a>
         </div>
       </div>
     </div>
