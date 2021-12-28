@@ -1,5 +1,6 @@
 package com.bookings.mvc.dao;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -7,9 +8,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.bookings.mvc.bean.PriceBean;
+import com.bookings.mvc.bean.RoomTypeBean;
+import com.mysql.fabric.xmlrpc.base.Data;
 
 public class PriceDao {
 	private String url;
@@ -143,5 +147,78 @@ public class PriceDao {
         disconnect();
         return rowDeleted;     
     }
+
+    public List<PriceBean> listPossiblePrices(int adult_count, int child_count, int number_of_rooms, int nights, int hid) throws SQLException {
+    	List<Object> listPossiblePrices = new ArrayList<>();
+        List<PriceBean> listPrice = new ArrayList<>();
+        String sql = null;
+       
+        List<List<PriceBean>> options = new ArrayList<>();
+        int assigned = 0;
+        
+        List<RoomTypeBean> possibleRTypes = accommodate(adult_count, child_count, number_of_rooms);
+        
+        
+        if(possibleRTypes.size() > 0) {
+        	
+        for(RoomTypeBean rt : possibleRTypes) {
+        	sql = "select * from prices where rt_id=" + rt.getId();
+        	sql += " and hid = " + hid;
+        	
+        	connect();
+            
+            Statement statement = con.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+             
+            while (resultSet.next()) {
+                int id = resultSet.getInt("pid");
+                int rtid = resultSet.getInt("rt_id");
+                String description = resultSet.getString("price_desc");
+                Float price = resultSet.getFloat("price");
+                Boolean weekend = resultSet.getBoolean("weekend");
+
+
+                 
+                PriceBean priceObj = new PriceBean(id, rtid, rt, description, price, weekend);
+                listPrice.add(priceObj);
+            }
+             
+            resultSet.close();
+            statement.close();
+             
+            disconnect();
+            
+        }
+        }
+        
+        return listPrice;
+    }
+    
+    public List<RoomTypeBean> accommodate(int adult_count, int child_count, int number_of_rooms) throws SQLException {
+    	RoomTypeBean rt = null;
+    	List<String> guests = new ArrayList<>();
+    	 List<RoomTypeBean> possibleRTypes = new ArrayList<>();
+
+    			
+    			String sql = "select * from room_types where adults <=" + adult_count;
+    			sql += " and children <=" + child_count;
+            	connect();
+                
+                Statement statement = con.createStatement();
+                ResultSet resultSet = statement.executeQuery(sql);
+                 
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    String type = resultSet.getString("type");
+                    int adult_c = resultSet.getInt("adults");
+                    int children_c = resultSet.getInt("children");
+
+                    rt = new RoomTypeBean(id, type, adult_c, children_c);
+                    possibleRTypes.add(rt);
+                }  
+    	
+    	return possibleRTypes;
+    }
+    
 
 }

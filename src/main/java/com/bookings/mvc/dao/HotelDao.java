@@ -135,6 +135,29 @@ public class HotelDao {
         return hotel;
     }
     
+    public int getHotelRoomCount(int hid) throws SQLException {
+    	int room_count = 0;
+    	
+    	String sql = "SELECT * FROM hotels where hid = " ;
+    	sql += hid;
+        
+        connect();
+         
+        PreparedStatement statement = con.prepareStatement(sql);
+         
+        ResultSet resultSet = statement.executeQuery();
+         
+        if (resultSet.next()) {
+            room_count = resultSet.getInt("room_count");
+        }
+         
+        resultSet.close();
+        statement.close();
+         
+    	
+    	return room_count;
+    }
+    
     public boolean deleteHotel(HotelBean hotel) throws SQLException {
         String sql = "delete from hotels where hid = ?";
          

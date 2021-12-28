@@ -49,8 +49,9 @@
     </form>
 
     <div class="ui message">
-      New to us? <a href="register.jsp">Sign Up</a>
+      New to us? <a href="register">Sign Up</a>
     </div>
+    <input type="hidden" value="" name="currentDate" id="currentDate"  />
   </div>
 </div>
 	
@@ -124,20 +125,12 @@
 		</script> -->
 		
 		<script>
-		var options = {
-			    /* ... */
-				gantt.$set({ 
-				    from: moment().startOf('week'),
-				    to: moment().endOf('week')
-				});
-			};
 
-			var gantt = new SvelteGantt({ 
-			    // target a DOM element
-			    target: document.getElementById('calendar'), 
-			    // svelte-gantt options
-			    props: options
-			});
+		$(document).ready(function(){
+			var date = new Date();
+			var today = date.toISOString().substring(0,10);
+			document.getElementById('currentDate').value = today;
+		});
 		</script>
 		<script src="../semantic/semantic.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"

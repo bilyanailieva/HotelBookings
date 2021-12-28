@@ -91,8 +91,10 @@ public class UserController extends HttpServlet
             	authorizeLogin(request, response);
             case "/office/login":
             	registerUser(request, response);
+            case "/office/register":
+            	showRegisterFormData(request, response);
             default:
-            	sendRoomsToCalendar(request, response);
+            	//sendRoomsToCalendar(request, response);
                 break;
             }
         } catch (SQLException ex) {
@@ -112,21 +114,31 @@ public class UserController extends HttpServlet
         dispatcher.forward(request, response);
     }
     
+    private void showRegisterFormData(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+    	List<HotelBean> listHotel = hotelDao.listAllHotels();
+    	request.setAttribute("listHotel", listHotel);
+    	RequestDispatcher dispatcher = request.getRequestDispatcher("register.jsp");
+        dispatcher.forward(request, response);
+    }
+    
     private void authorizeLogin(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
     	String username = request.getParameter("txt_username");
     	String password = request.getParameter("txt_password");
+    	String today = request.getParameter("currentDate");
         UserBean existingUser = userDao.UserLoginAuthorize(username, password);
         if(existingUser != null ) {
-        	HttpSession session=request.getSession(); //session is created
-            session.setAttribute("login", existingUser.getUsername()); //session name is "login" and  store username in "getUsername()" get through loginBean object
-            RequestDispatcher rd=request.getRequestDispatcher("/office/welcome.jsp"); //redirect to welcome.jsp page
-            rd.forward(request, response);
+        	HttpSession session=request.getSession();
+            session.setAttribute("login", existingUser.getUsername());
+            session.setAttribute("currentDate", today);
+            RequestDispatcher rd=request.getRequestDispatcher("/office/welcome.jsp");
+            rd.include(request, response);
         }
         else
         {
-            RequestDispatcher rd=request.getRequestDispatcher("/office/index.jsp"); //show error same index.jsp page
-            rd.include(request, response);
+            RequestDispatcher rd=request.getRequestDispatcher("/office/index.jsp");
+            rd.forward(request, response);
         }	
     }
     
@@ -135,11 +147,11 @@ public class UserController extends HttpServlet
     	String fname = request.getParameter("txt_fname");
     	String lname = request.getParameter("txt_lname");
     	String username = request.getParameter("txt_username");
-    	int role = Integer.parseInt(request.getParameter("txt_role"));
+    	int hid = Integer.parseInt(request.getParameter("txt_hid"));
     	String password = request.getParameter("txt_password");
     	
     	
-    	UserBean newUser = new UserBean(fname, lname, username, role, password);
+    	UserBean newUser = new UserBean(fname, lname, username, hotelDao.getHotel(hid), password);
         userDao.registerUser(newUser);
         RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
         dispatcher.forward(request, response);

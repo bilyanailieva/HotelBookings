@@ -65,17 +65,17 @@
 	class="side-menu col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
 	<ul class="nav flex-column">
 		<li class="nav-item">
-        <a href="#" class="nav-link active" aria-current="page">
+        <a href="/HotelBookings/office/welcome.jsp" class="nav-link active" aria-current="page">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"/></svg>
           Home
         </a>
       </li>
-		<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+		<li class="nav-item"><a class="nav-link" href="/HotelBookings/office/reservations-list">All Reservations</a></li>
 		<li class="nav-item"><a class="nav-link" href="/HotelBookings/office/calendar">Calendar</a></li>
 		<li class="nav-item"><a class="nav-link" href="/HotelBookings/office/hotelsettings" aria-current="page"
 			tabindex="-1">
 			<svg class="bi me-2" width="16" height="16"><use xlink:href="#gear-fill"/></svg>
-			Settings</a></li>		
+			MyHotel</a></li>		
   <a class="nav-link"data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
     Settings
  </a>

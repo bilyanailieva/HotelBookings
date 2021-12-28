@@ -51,7 +51,6 @@ public class RoomController extends HttpServlet {
         try {
             switch (action) {
             case "/office/rooms/new":
-            	listRoomTypes(request, response);
                 showNewForm(request, response);
                 break;
             case "/office/rooms/insert":
@@ -61,7 +60,6 @@ public class RoomController extends HttpServlet {
                 deleteRoom(request, response);
                 break;
             case "/office/rooms/edit":
-                listRoomTypes(request, response);
                 showEditForm(request, response);
                 break;
             case "/office/rooms/update":
@@ -92,13 +90,17 @@ public class RoomController extends HttpServlet {
     }
  
     private void showNewForm(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
+    	List<RoomTypeBean> listRoomType = roomTypeDao.listAllRoomTypes();
+        request.setAttribute("listRoomTypes", listRoomType);
         RequestDispatcher dispatcher = request.getRequestDispatcher("room_form.jsp");
         dispatcher.forward(request, response);
     }
  
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
+    	List<RoomTypeBean> listRoomType = roomTypeDao.listAllRoomTypes();
+        request.setAttribute("listRoomTypes", listRoomType);
         int id = Integer.parseInt(request.getParameter("id"));
         RoomBean existingRoom = roomDao.getRoom(id);
         RequestDispatcher dispatcher = request.getRequestDispatcher("room_form.jsp");

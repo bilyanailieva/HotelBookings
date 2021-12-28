@@ -41,6 +41,18 @@
         <servlet-name>PriceController</servlet-name>
          <servlet-class>com.bookings.mvc.controller.PriceController</servlet-class> 
     </servlet>
+    <servlet>
+        <servlet-name>CalendarController</servlet-name>
+        <servlet-class>com.bookings.mvc.controller.CalendarController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReservationController</servlet-name>
+        <servlet-class>com.bookings.mvc.controller.ReservationController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DashboardController</servlet-name>
+        <servlet-class>com.bookings.mvc.controller.DashboardController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterController</servlet-name>
         <url-pattern>/RegisterController</url-pattern>
@@ -50,9 +62,12 @@
         <url-pattern>/office/welcome</url-pattern>
         <url-pattern>/office/login</url-pattern>
         <url-pattern>/office/welcome/list</url-pattern>
+        <url-pattern>/office/register</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>HotelController</servlet-name>
+        <url-pattern>/choose-hotel</url-pattern>
+        <url-pattern>/choose-hotel/choice-made</url-pattern>
         <url-pattern>/office/hotelsettings/</url-pattern>
         <url-pattern>/office/hotelsettings/new-hotel</url-pattern>
         <url-pattern>/office/hotelsettings/insert-hotel</url-pattern>
@@ -80,7 +95,6 @@
         <url-pattern>/office/rooms/delete</url-pattern>
         <url-pattern>/office/rooms/edit</url-pattern>
         <url-pattern>/office/rooms/update</url-pattern>
-        <url-pattern>/office/calendar</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PriceController</servlet-name>
@@ -92,7 +106,32 @@
         <url-pattern>/office/roomtypes/edit-price</url-pattern>
         <url-pattern>/office/roomtypes/update-price</url-pattern>
         <url-pattern>/office/roomtypes/view-prices</url-pattern>
-    </servlet-mapping> 
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReservationController</servlet-name>
+        <url-pattern>/user/</url-pattern>
+        <url-pattern>/user/request</url-pattern>
+        <url-pattern>/user/availability</url-pattern>
+        <url-pattern>/user/edit-request</url-pattern>
+        <url-pattern>/user/reservation-confirmation</url-pattern>
+        <url-pattern>/${pageContext.request.contextPath}/request</url-pattern>
+        <url-pattern>/user/submit-data</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CalendarController</servlet-name>
+        <url-pattern>/office/calendar</url-pattern>
+        <url-pattern>/office/assign-form</url-pattern>
+        <url-pattern>/office/assign</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DashboardController</servlet-name>
+        <url-pattern>/office/welcome.jsp</url-pattern>
+        <url-pattern>/office/confirmation</url-pattern>
+        <url-pattern>/office/change-status</url-pattern>
+        <url-pattern>/office/view</url-pattern>
+        <url-pattern>/office/reservations-list</url-pattern>
+        <url-pattern>/office/update-reservation</url-pattern>
+    </servlet-mapping>  
     <session-config>
         <session-timeout>
             60

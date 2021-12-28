@@ -42,11 +42,13 @@ public class RoomTypeDao {
     }
     
     public boolean insertRoomType(RoomTypeBean room_type) throws SQLException {
-        String sql = "insert into room_types(type) value(?)";
+        String sql = "insert into room_types(type, adults, children) value(?, ?, ?)";
         connect();
          
         PreparedStatement statement = con.prepareStatement(sql);
         statement.setString(1, room_type.getType());
+        statement.setInt(2, room_type.getAdults());
+        statement.setInt(3, room_type.getChildren());
          
         boolean rowInserted = statement.executeUpdate() > 0;
         statement.close();
@@ -81,13 +83,15 @@ public class RoomTypeDao {
     }
     
     public boolean updateRoomType(RoomTypeBean roomType) throws SQLException {
-        String sql = "update room_types set type = ?";
+        String sql = "update room_types set type = ?, adults = ?, children = ?";
         sql += " where id = ?";
         connect();
          
         PreparedStatement statement = con.prepareStatement(sql);
         statement.setString(1, roomType.getType());
-        statement.setInt(2, roomType.getId());
+        statement.setInt(2, roomType.getAdults());
+        statement.setInt(3, roomType.getChildren());
+        statement.setInt(4, roomType.getId());
         
         
          

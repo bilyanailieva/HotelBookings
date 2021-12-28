@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.bookings.mvc.bean.HotelBean;
+import com.bookings.mvc.bean.ReservationBean;
 import com.bookings.mvc.bean.RoomBean;
 import com.bookings.mvc.bean.RoomTypeBean;
 import com.bookings.mvc.dao.HotelDao;
@@ -65,6 +66,12 @@ public class HotelController extends HttpServlet {
             case "/office/hotelsettings/update-hotel":
                 updateHotel(request, response);
                 break;
+            case "/choose-hotel":
+            	showAllHotels(request, response);
+            	break;
+//            case "/choose-hotel/choice-made":
+//            	sendHidToBookingForm(request, response);
+//            	break;
             default:
             	//listRoomTypes(request, response);
             	listHotels(request, response);
@@ -74,6 +81,14 @@ public class HotelController extends HttpServlet {
             throw new ServletException(ex);
         }
     }
+    
+    private void showAllHotels(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException {
+		List<HotelBean> listHotels = hotelDao.listAllHotels();
+		RequestDispatcher dispatcher = request.getRequestDispatcher("chooseHotel.jsp");
+		request.setAttribute("listHotels", listHotels);
+		dispatcher.include(request, response);
+	}
  
     private void listHotels(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {

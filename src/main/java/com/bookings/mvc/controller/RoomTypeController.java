@@ -94,8 +94,10 @@ public class RoomTypeController extends HttpServlet {
     private void insertRoomType(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
         String room_type = request.getParameter("room_type");
+        int adult_count = Integer.parseInt(request.getParameter("adult_count"));
+        int child_count = Integer.parseInt(request.getParameter("child_count"));
  
-        RoomTypeBean newRoomType = new RoomTypeBean(room_type);
+        RoomTypeBean newRoomType = new RoomTypeBean(room_type, adult_count, child_count);
         roomTypeDao.insertRoomType(newRoomType);
         response.sendRedirect("list");
     }
@@ -104,8 +106,10 @@ public class RoomTypeController extends HttpServlet {
             throws SQLException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         String room_type = request.getParameter("room_type");
+        int adult_count = Integer.parseInt(request.getParameter("adult_count"));
+        int child_count = Integer.parseInt(request.getParameter("child_count"));
  
-        RoomTypeBean roomType = new RoomTypeBean(id, room_type);
+        RoomTypeBean roomType = new RoomTypeBean(id, room_type, adult_count, child_count);
         roomTypeDao.updateRoomType(roomType);
         response.sendRedirect("list");
     }

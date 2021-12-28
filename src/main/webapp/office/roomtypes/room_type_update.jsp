@@ -59,6 +59,16 @@
 						id="room_type" name="room_type" size="45"
 						value="<c:out value='${room_type.type}' />" />
 				</div>
+				<div class="form-group">
+					<label>How many adults can the room accommodate?</label> <input class="form-control" type="number"
+						id="adult_count" name="adult_count"
+						value="<c:out value='${room_type.adults}' />" />
+				</div>
+				<div class="form-group">
+					<label>How many children can the room accommodate?</label> <input class="form-control" type="number"
+						id="child_count" name="child_count"
+						value="<c:out value='${room_type.children}' />" />
+				</div>
 
 				<input type="submit" class="btn btn-primary" value="Save" />
 				</form>

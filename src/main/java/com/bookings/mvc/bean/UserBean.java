@@ -2,8 +2,10 @@ package com.bookings.mvc.bean;
 
 public class UserBean 
 {
-	private int id, role;
+	private int id;
     private String firstname, lastname, username, password;
+    private HotelBean hotel_id;
+    private int hid;
     
     public UserBean() {
     }
@@ -12,16 +14,29 @@ public class UserBean
         this.id = id;
     }
  
-    public UserBean(int id, String firstname, String lastname, String username, int role, String password) {
-        this(firstname, lastname, username, role, password);
+    public UserBean(int id, String firstname, String lastname, String username, HotelBean hotel_id, String password) {
+        this(firstname, lastname, username, hotel_id, password);
+        this.id = id;
+    }
+    
+    public UserBean(int id, String firstname, String lastname, String username, int hid, String password) {
+        this(firstname, lastname, username, hid, password);
         this.id = id;
     }
      
-    public UserBean(String firstname, String lastname, String username, int role, String password) {
+    public UserBean(String firstname, String lastname, String username, HotelBean hotel_id, String password) {
         this.firstname = firstname;
         this.lastname = lastname; 
         this.username = username;
-        this.role = role;
+        this.hotel_id = hotel_id;
+        this.password = password; 
+    }
+    
+    public UserBean(String firstname, String lastname, String username, int hid, String password) {
+        this.firstname = firstname;
+        this.lastname = lastname; 
+        this.username = username;
+        this.hid = hid;
         this.password = password; 
     }
     
@@ -33,12 +48,20 @@ public class UserBean
 		this.id = id;
 	}
 
-	public int getRole() {
-		return role;
+	public HotelBean getHotelId() {
+		return hotel_id;
 	}
 
-	public void setRole(int role) {
-		this.role = role;
+	public void setHotelId(HotelBean hotel_id) {
+		this.hotel_id = hotel_id;
+	}
+	
+	public int getHId() {
+		return hid;
+	}
+
+	public void setHId(int hid) {
+		this.hid = hid;
 	}
 
 	public String getFirstname() {

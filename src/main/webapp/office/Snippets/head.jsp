@@ -13,11 +13,11 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/@event-calendar/build/event-calendar.min.js"></script>
 <link rel="stylesheet" type="text/css"
-	href="../../semantic/semantic.min.css">
+	href="/HotelBookings/semantic/semantic.min.css">
 <link rel="stylesheet" type="text/css"
-	href="../../fontawesome/css/all.css">	
-<script src="../../semantic/semantic.min.js"></script>
+	href="/HotelBookings/fontawesome/css/all.css">	
+<script src="/HotelBookings/semantic/semantic.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"
 	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 	crossorigin="anonymous"></script>
-<script src="../../assets/js/forms.js" type="text/javascript"></script>
+<script src="/HotelBookings/assets/js/forms.js" type="text/javascript"></script>
