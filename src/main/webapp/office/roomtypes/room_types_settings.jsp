@@ -34,6 +34,8 @@
 							<th></th>
 							<th>ID</th>
 							<th>Type</th>
+							<th>Adults to accommodate</th>
+							<th>Children to accommodate</th>
 							<th>Prices</th>
 							<th></th>
 							<th></th>
@@ -49,6 +51,8 @@
 								</td>
 								<td><c:out value="${room_type.id}" /></td>
 								<td><c:out value="${room_type.type}" /></td>
+								<td><c:out value="${room_type.adults}" /></td>
+								<td><c:out value="${room_type.children}" /></td>
 								<td><a href="view-prices?id=<c:out value='${room_type.id}' />">View Prices</a></td>
 								<td><a href="edit?id=<c:out value='${room_type.id}' />">Edit</a>
 								</td>

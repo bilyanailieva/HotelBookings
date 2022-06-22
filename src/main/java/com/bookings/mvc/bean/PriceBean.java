@@ -3,10 +3,11 @@ package com.bookings.mvc.bean;
 public class PriceBean {
 	private int pid;
 	private int rtid;
-	private RoomTypeBean type;
+	private RoomTypeBean rt;
 	private String price_desc;
 	private Float price;
 	private Boolean weekend;
+	private HotelBean hotel;
 
 	public PriceBean() {
     }
@@ -15,32 +16,37 @@ public class PriceBean {
         this.pid = pid;
     }
     
-    public PriceBean(int pid, int rtid, RoomTypeBean type, String price_desc, Float price, Boolean weekend) {
-        this(rtid, price_desc, price);
-        this.weekend = weekend;
-        this.type = type;
+    public PriceBean(int pid, RoomTypeBean rt, String price_desc, Float price, Boolean weekend) {
+        this(rt, price_desc, price, weekend);
         this.pid = pid;
     }
     
-    public PriceBean(int pid, int rtid, String price_desc, Float price, Boolean weekend) {
-        this(rtid, price_desc, price, weekend);
+    public PriceBean(int pid, RoomTypeBean rt, String price_desc, Float price, HotelBean hotel) {
+        this(rt, price_desc, price, hotel);
         this.pid = pid;
+    }
+    
+    public PriceBean(RoomTypeBean rt, String price_desc, Float price, HotelBean hotel) {
+        this.rt = rt;
+        this.price_desc = price_desc; 
+        this.price = price;
+        this.hotel = hotel;
     }
  
-    public PriceBean(int pid, int rtid, String price_desc, Float price) {
-        this(rtid, price_desc, price);
+    public PriceBean(int pid, RoomTypeBean rt, String price_desc, Float price) {
+        this(rt, price_desc, price);
         this.pid = pid;
     }
     
-    public PriceBean(int rtid, String price_desc, Float price, Boolean weekend) {
-        this.rtid = rtid;
+    public PriceBean(RoomTypeBean rt, String price_desc, Float price, Boolean weekend) {
+        this.rt = rt;
         this.price_desc = price_desc; 
         this.price = price;
         this.weekend = weekend;
     }
      
-    public PriceBean(int rtid, String price_desc, Float price) {
-        this.rtid = rtid;
+    public PriceBean(RoomTypeBean rt, String price_desc, Float price) {
+        this.rt = rt;
         this.price_desc = price_desc; 
         this.price = price;
     }
@@ -51,11 +57,11 @@ public class PriceBean {
 	public void setPid(int pid) {
 		this.pid = pid;
 	}
-	public int getRtid() {
-		return rtid;
+	public RoomTypeBean getRt() {
+		return rt;
 	}
-	public void setRtid(int rtid) {
-		this.rtid = rtid;
+	public void setRt(RoomTypeBean rt) {
+		this.rt = rt;
 	}
 	public String getPrice_desc() {
 		return price_desc;
@@ -69,14 +75,6 @@ public class PriceBean {
 	public void setPrice(Float price) {
 		this.price = price;
 	}
-
-	public RoomTypeBean getType() {
-		return type;
-	}
-
-	public void setType(RoomTypeBean type) {
-		this.type = type;
-	}
 	
 	public Boolean getWeekend() {
 		return weekend;
@@ -85,6 +83,15 @@ public class PriceBean {
 	public void setWeekend(Boolean weekend) {
 		this.weekend = weekend;
 	}
+
+	public HotelBean getHotel() {
+		return hotel;
+	}
+
+	public void setHotel(HotelBean hotel) {
+		this.hotel = hotel;
+	}
+	
 	
 	
 	

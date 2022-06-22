@@ -20,16 +20,13 @@
 			<div>
 				<h1>My Hotel</h1>
 				<p>Manage your hotel from here. See rooms, room types and prices.</p>
-				<c:if test="${listHotel.size() < 1}">
+				<%-- <c:if test="${listHotel.size() < 1}">
 				<h2>
 					<a href="new-hotel" class="massive ui blue button">Add New Hotel</a> 
 					<p>Add the details of the hotel, that you want to be managed by clicking the button above.</p>
 					<!-- <a href="list">List All RoomTypes</a> -->
 				</h2>
-				</c:if>
-				<c:if test="${listHotel.size() >= 1}">
-					<p>You have already added one hotel. The system currently supports the management of only one hotel.</p>
-				</c:if>
+				</c:if> --%>
 			</div>
 			<br>
 			<br>
@@ -48,7 +45,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="hotel" items="${listHotel}">
+						<c:set var="hotel" value="${listHotel}"></c:set>
 							<tr>
 								<td><c:out value="${hotel.hid}" /></td>
 								<td><c:out value="${hotel.hotel_name}" /></td>
@@ -60,7 +57,6 @@
 								</td>
 								<td><a href="delete-hotel?hid=<c:out value='${hotel.hid}' />">Delete</a></td>
 							</tr>
-						</c:forEach>
 					</tbody>
 					<tfoot class="full-width">
 						<tr>

@@ -66,24 +66,21 @@
 	<ul class="nav flex-column">
 		<li class="nav-item">
         <a href="/HotelBookings/office/welcome.jsp" class="nav-link active" aria-current="page">
-          <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"/></svg>
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
           Home
         </a>
       </li>
-		<li class="nav-item"><a class="nav-link" href="/HotelBookings/office/reservations-list">All Reservations</a></li>
-		<li class="nav-item"><a class="nav-link" href="/HotelBookings/office/calendar">Calendar</a></li>
+		<li class="nav-item"><a class="nav-link" href="/HotelBookings/office/reservations-list"><svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"/></svg> All Reservations</a></li>
+		<li class="nav-item"><a class="nav-link" href="/HotelBookings/office/calendar"><svg class="bi me-2" width="16" height="16"><use xlink:href="#calendar3"/></svg> Calendar</a></li>
 		<li class="nav-item"><a class="nav-link" href="/HotelBookings/office/hotelsettings" aria-current="page"
-			tabindex="-1">
-			<svg class="bi me-2" width="16" height="16"><use xlink:href="#gear-fill"/></svg>
-			MyHotel</a></li>		
-  <a class="nav-link"data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+			tabindex="-1"><svg class="bi me-2" width="16" height="16"><use xlink:href="#home"/></svg> MyHotel</a></li>		
+  <a class="nav-link"data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"><svg class="bi me-2" width="16" height="16"><use xlink:href="#gear-fill"/></svg>
     Settings
  </a>
   <div class="collapse" id="collapseExample">
     <a class="nav-link" href="/HotelBookings/office/roomtypes">Room Types</a>
     <a class="nav-link" href="/HotelBookings/office/rooms">Rooms</a>
     <a class="nav-link" href="/HotelBookings/office/roomtypes/list-prices">Prices</a>
-    <a class="nav-link" href="#">Something else here</a>
 </div>
 	</ul>
 </div>

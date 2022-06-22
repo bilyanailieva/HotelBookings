@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.bookings.mvc.bean.HotelBean;
 import com.bookings.mvc.bean.ReservationBean;
@@ -17,6 +18,7 @@ import com.bookings.mvc.bean.RoomTypeBean;
 import com.bookings.mvc.dao.HotelDao;
 import com.bookings.mvc.dao.RoomDao;
 import com.bookings.mvc.dao.RoomTypeDao;
+import com.bookings.mvc.dao.UserDao;
  
 /**
  * ControllerServlet.java
@@ -28,6 +30,7 @@ public class HotelController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private HotelDao hotelDao;
     private RoomTypeDao roomTypeDao;
+    private UserDao userDao;
  
     public void init() {
     	String url = getServletContext().getInitParameter("url");
@@ -36,6 +39,7 @@ public class HotelController extends HttpServlet {
 
 		hotelDao = new HotelDao(url, name, pass);
 		roomTypeDao = new RoomTypeDao(url, name, pass);
+		userDao = new UserDao(url, name, pass);
     }
  
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -92,7 +96,9 @@ public class HotelController extends HttpServlet {
  
     private void listHotels(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        List<HotelBean> listHotel = hotelDao.listAllHotels();
+    	HttpSession session=request.getSession();
+    	int hid = userDao.GetUserByUsername(session.getAttribute("login").toString()).getHId();
+        HotelBean listHotel = hotelDao.getHotel(hid);
         request.setAttribute("listHotel", listHotel);
         RequestDispatcher dispatcher = request.getRequestDispatcher("settings.jsp");
         dispatcher.forward(request, response);
@@ -156,13 +162,4 @@ public class HotelController extends HttpServlet {
         response.sendRedirect("list-hotel");
  
     }
-    
-	/*
-	 * private void listRoomTypes(HttpServletRequest request, HttpServletResponse
-	 * response) throws SQLException, IOException, ServletException {
-	 * List<RoomTypeBean> listRoomType = roomTypeDao.listAllRoomTypes();
-	 * request.setAttribute("listRoomTypes", listRoomType); RequestDispatcher
-	 * dispatcher = request.getRequestDispatcher("room_form.jsp");
-	 * dispatcher.include(request, response); }
-	 */
 }

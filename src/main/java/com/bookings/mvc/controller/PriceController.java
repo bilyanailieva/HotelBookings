@@ -9,12 +9,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-
+import com.bookings.mvc.bean.HotelBean;
 import com.bookings.mvc.bean.PriceBean;
 import com.bookings.mvc.bean.RoomTypeBean;
 import com.bookings.mvc.dao.PriceDao;
 import com.bookings.mvc.dao.RoomTypeDao;
+import com.bookings.mvc.dao.UserDao;
 
 /**
  * ControllerServlet.java
@@ -26,6 +28,7 @@ public class PriceController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private PriceDao priceDao;
     private RoomTypeDao roomTypeDao;
+    private UserDao userDao;
     
     public void init() {
     	String url = getServletContext().getInitParameter("url");
@@ -34,6 +37,7 @@ public class PriceController extends HttpServlet {
 
 		priceDao = new PriceDao(url, name, pass);
 		roomTypeDao = new RoomTypeDao(url, name, pass);
+		userDao = new UserDao(url, name, pass);
     }
  
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -76,7 +80,9 @@ public class PriceController extends HttpServlet {
  
     private void listPrices(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        List<PriceBean> listPrice = priceDao.listAllPrices();
+    	HttpSession session=request.getSession();
+    	int hid = userDao.GetUserByUsername(session.getAttribute("login").toString()).getHId();
+        List<PriceBean> listPrice = priceDao.listAllPrices(hid);
         List<RoomTypeBean> rtlist = roomTypeDao.listAllRoomTypes();
         RequestDispatcher dispatcher = request.getRequestDispatcher("prices.jsp");
         request.setAttribute("listRoomTypes", rtlist);
@@ -87,8 +93,10 @@ public class PriceController extends HttpServlet {
     private void viewRTPrices(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
     	int rtid = Integer.parseInt(request.getParameter("id"));
+    	HttpSession session=request.getSession();
+    	int hid = userDao.GetUserByUsername(session.getAttribute("login").toString()).getHId();
     	RoomTypeBean rt = roomTypeDao.getRoomType(rtid);
-        List<PriceBean> listPrice = priceDao.listAllPrices();
+        List<PriceBean> listPrice = priceDao.listAllPrices(hid);
         RequestDispatcher dispatcher = request.getRequestDispatcher("prices.jsp");
         request.setAttribute("rt", rt);
         request.setAttribute("listPrice", listPrice);
@@ -117,11 +125,13 @@ public class PriceController extends HttpServlet {
  
     private void insertPrice(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
+    	HttpSession session=request.getSession();
+    	int hid = userDao.GetUserByUsername(session.getAttribute("login").toString()).getHId();
     	int rtid = Integer.parseInt(request.getParameter("rt_id"));
         String description = request.getParameter("price_desc");
         Float price = Float.parseFloat(request.getParameter("price"));
         
-        PriceBean newPrice = new PriceBean(rtid, description, price);
+        PriceBean newPrice = new PriceBean(new RoomTypeBean(rtid), description, price, new HotelBean(hid));
         priceDao.insertPrice(newPrice);
         response.sendRedirect("list-prices");
     }
@@ -133,7 +143,7 @@ public class PriceController extends HttpServlet {
         String description = request.getParameter("price_desc");
         Float price = Float.parseFloat(request.getParameter("price"));
        
-        PriceBean priceObj = new PriceBean(id, rtid, description, price);
+        PriceBean priceObj = new PriceBean(id, new RoomTypeBean(rtid), description, price);
         priceDao.updatePrice(priceObj);
         response.sendRedirect("list-prices");
     }
@@ -147,13 +157,4 @@ public class PriceController extends HttpServlet {
         response.sendRedirect("list-prices");
  
     }
-    
-	/*
-	 * private void listR(HttpServletRequest request, HttpServletResponse response)
-	 * throws SQLException, IOException, ServletException { List<RoomTypeBean>
-	 * listRoomType = roomTypeDao.listAllRoomTypes();
-	 * request.setAttribute("listRoomTypes", listRoomType); RequestDispatcher
-	 * dispatcher = request.getRequestDispatcher("room_form.jsp");
-	 * dispatcher.include(request, response); }
-	 */
 }

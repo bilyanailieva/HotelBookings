@@ -9,9 +9,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.bookings.mvc.bean.RoomTypeBean;
 import com.bookings.mvc.dao.RoomTypeDao;
+import com.bookings.mvc.dao.UserDao;
  
 /**
  * ControllerServlet.java
@@ -22,6 +24,7 @@ import com.bookings.mvc.dao.RoomTypeDao;
 public class RoomTypeController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private RoomTypeDao roomTypeDao;
+    private UserDao userDao;
  
     public void init() {
     	String url = getServletContext().getInitParameter("url");
@@ -29,7 +32,7 @@ public class RoomTypeController extends HttpServlet {
 		String pass = getServletContext().getInitParameter("pass");
 
 		roomTypeDao = new RoomTypeDao(url, name, pass);
- 
+		userDao = new UserDao(url, name, pass);
     }
  
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

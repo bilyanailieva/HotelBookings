@@ -2,14 +2,14 @@ package com.bookings.mvc.bean;
 
 public class RoomBean {
 	private int id; 
-	private int rtid;
-	//private RoomTypeBean rt;
+	private RoomTypeBean rt;
 	private String name;
 	private boolean first_floor; 
 	private boolean extra_bed; 
 	private boolean baby_crib; 
 	private boolean handycap;
-	
+	private HotelBean hotel;
+
 	public RoomBean() {
     }
  
@@ -17,18 +17,33 @@ public class RoomBean {
         this.id = id;
     }
  
-    public RoomBean(int id, int rtid, String name, boolean first_floor, boolean extra_bed, boolean baby_crib, boolean handycap) {
-        this(rtid, name, first_floor, extra_bed, baby_crib, handycap);
+    public RoomBean(int id, RoomTypeBean rt, String name, boolean first_floor, boolean extra_bed, boolean baby_crib, boolean handycap) {
+        this(rt, name, first_floor, extra_bed, baby_crib, handycap);
         this.id = id;
     }
      
-    public RoomBean(int rtid, String name, boolean first_floor, boolean extra_bed, boolean baby_crib, boolean handycap) {
-        this.rtid = rtid;
+    public RoomBean(RoomTypeBean rt, String name, boolean first_floor, boolean extra_bed, boolean baby_crib, boolean handycap) {
+        this.rt = rt;
         this.name = name; 
         this.first_floor = first_floor;
         this.extra_bed = extra_bed;
         this.baby_crib = baby_crib;
         this.handycap = handycap;
+    }
+    
+    public RoomBean(int id, RoomTypeBean rt, String name, boolean first_floor, boolean extra_bed, boolean baby_crib, boolean handycap, HotelBean hotel) {
+        this(rt, name, first_floor, extra_bed, baby_crib, handycap, hotel);
+        this.id = id;
+    }
+     
+    public RoomBean(RoomTypeBean rt, String name, boolean first_floor, boolean extra_bed, boolean baby_crib, boolean handycap, HotelBean hotel) {
+        this.rt = rt;
+        this.name = name; 
+        this.first_floor = first_floor;
+        this.extra_bed = extra_bed;
+        this.baby_crib = baby_crib;
+        this.handycap = handycap;
+        this.hotel = hotel;
     }
     
 	public int getId() {
@@ -37,11 +52,11 @@ public class RoomBean {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getRtid() {
-		return rtid;
+	public RoomTypeBean getRt() {
+		return rt;
 	}
-	public void setRtid(int rtid) {
-		this.rtid = rtid;
+	public void setRtid(RoomTypeBean rt) {
+		this.rt = rt;
 	}
 	public String getName() {
 		return name;
@@ -72,6 +87,14 @@ public class RoomBean {
 	}
 	public void setHandycap(boolean handycap) {
 		this.handycap = handycap;
+	}
+	
+	public HotelBean getHotel() {
+		return hotel;
+	}
+
+	public void setHotel(HotelBean hotel) {
+		this.hotel = hotel;
 	}
 	
 	

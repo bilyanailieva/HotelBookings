@@ -41,7 +41,7 @@
 					</thead>
 					<tbody>
 						<c:forEach var="price" items="${listPrice}">
-								<c:if test="${price.rtid == rt.id && rt.id != null}">
+								<c:if test="${price.rt.id == rt.id && rt.id != null}">
 									<tr>
 								<td class="collapsing">
 									<div class="ui fitted slider checkbox">
@@ -51,7 +51,7 @@
 								<td><c:out value="${price.pid}" /></td>
 									<td><c:out value='${rt.type}' /></td>
 								<c:forEach var="room_type" items="${listRoomTypes}">
-									<c:if test="${room_type.id == price.rtid}">
+									<c:if test="${room_type.id == price.rt.id}">
 									<td><c:out value='${room_type.type}' /></td>
 									</c:if>
 								</c:forEach>
@@ -74,7 +74,7 @@
 									<td><c:out value='${rt.type}' /></td>
 								</c:if>
 								<c:forEach var="room_type" items="${listRoomTypes}">
-									<c:if test="${room_type.id == price.rtid}">
+									<c:if test="${room_type.id == price.rt.id}">
 									<td><c:out value='${room_type.type}' /></td>
 									</c:if>
 								</c:forEach>

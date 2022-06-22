@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bookings.mvc.bean.RoomBean;
+import com.bookings.mvc.bean.RoomTypeBean;
 
 public class RoomDao {
 	private String url;
@@ -42,16 +43,19 @@ public class RoomDao {
     }
     
     public boolean insertRoom(RoomBean room) throws SQLException {
-        String sql = "insert into rooms (rtid, name, first_floor, extra_bed, baby_crib, is_handycap) values(?, ?, ?, ?, ?, ?)";
+        String sql = "insert into rooms (rtid, name, first_floor, extra_bed, baby_crib, is_handycap, h_id)";
+        sql += "values(?, ?, ?, ?, ?, ?, ?)";
+        
         connect();
          
         PreparedStatement statement = con.prepareStatement(sql);
-        statement.setInt(1, room.getRtid());
+        statement.setInt(1, room.getRt().getId());
         statement.setString(2, room.getName());
         statement.setBoolean(3, room.isFirst_floor());
         statement.setBoolean(4, room.isExtra_bed());
         statement.setBoolean(5, room.isBaby_crib());
         statement.setBoolean(6, room.isHandycap());
+        statement.setInt(7, room.getHotel().getHid());
          
         boolean rowInserted = statement.executeUpdate() > 0;
         statement.close();
@@ -59,10 +63,10 @@ public class RoomDao {
         return rowInserted;
     }
     
-    public List<RoomBean> listAllRooms() throws SQLException {
+    public List<RoomBean> listAllRooms(int hid) throws SQLException {
         List<RoomBean> listRoom = new ArrayList<>();
          
-        String sql = "select * from rooms order by id";
+        String sql = "select * from rooms where h_id = " + hid + " order by id";
          
         connect();
          
@@ -79,7 +83,7 @@ public class RoomDao {
             Boolean is_handycap = resultSet.getBoolean("is_handycap");
 
              
-            RoomBean room = new RoomBean(id, rtid, name, first_floor, extra_bed, baby_crib, is_handycap);
+            RoomBean room = new RoomBean(id, new RoomTypeBean(rtid), name, first_floor, extra_bed, baby_crib, is_handycap);
             listRoom.add(room);
         }
          
@@ -97,7 +101,7 @@ public class RoomDao {
         connect();
          
         PreparedStatement statement = con.prepareStatement(sql);
-        statement.setInt(1, room.getRtid());
+        statement.setInt(1, room.getRt().getId());
         statement.setString(2, room.getName());
         statement.setBoolean(3, room.isFirst_floor());
         statement.setBoolean(4, room.isExtra_bed());
@@ -132,7 +136,7 @@ public class RoomDao {
             Boolean baby_crib = resultSet.getBoolean("baby_crib");
             Boolean is_handycap = resultSet.getBoolean("is_handycap");
              
-            room = new RoomBean(id, rtid, name, first_floor, extra_bed, baby_crib, is_handycap);
+            room = new RoomBean(id, new RoomTypeBean(rtid), name, first_floor, extra_bed, baby_crib, is_handycap);
         }
          
         resultSet.close();

@@ -24,3 +24,11 @@ header .dropdown-toggle {
 main {
 	min-height: calc(100vh - 48px);
 }
+
+.ec-month .ec-event-title { 
+	white-space: unset !important;
+}
+
+.ec-event-title {
+	overflow: visible !important;
+}

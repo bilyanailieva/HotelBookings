@@ -116,6 +116,7 @@
         <url-pattern>/user/reservation-confirmation</url-pattern>
         <url-pattern>/${pageContext.request.contextPath}/request</url-pattern>
         <url-pattern>/user/submit-data</url-pattern>
+        <url-pattern>/user/cancel</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CalendarController</servlet-name>

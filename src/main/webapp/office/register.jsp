@@ -36,27 +36,27 @@
 				<div class="ui stacked segment">
 					<div class="field">
 						<div class="ui left icon input">
-							<i class="fas fa-user"></i> <input type="text" name="txt_fname"
+							<input type="text" name="txt_fname"
 								placeholder="First Name">
 						</div>
 					</div>
 					<div class="field">
 						<div class="ui left icon input">
-							<i class="fas fa-user"></i> <input type="text" name="txt_lname"
+							<input type="text" name="txt_lname"
 								placeholder="Last Name">
 						</div>
 					</div>
 					<div class="field">
 						<div class="ui left icon input">
-							<i class="fas fa-user"></i> <input type="text"
+							<input type="text"
 								name="txt_username" placeholder="Username">
 						</div>
 					</div>
 					<div class="field">
 						<div class="ui left icon input">
-							<i class="fas fa-user"></i> <select id="txt_hid" name="txt_hid">
+							<select id="txt_hid" name="txt_hid">
+							<option selected>Choose hotel...</option>
 								<c:forEach var="hotel" items="${listHotel}">
-								<option selected>Choose hotel...</option>
 									<option value="<c:out value='${hotel.hid}'/>">
 										<c:out value='${hotel.hotel_name}' /></option>
 								</c:forEach>
@@ -65,7 +65,7 @@
 					</div>
 					<div class="field">
 						<div class="ui left icon input">
-							<i class="fas fa-key"></i> <input type="password"
+							<input type="password"
 								name="txt_password" placeholder="Password">
 						</div>
 					</div>

@@ -60,7 +60,9 @@ public class RoomTypeDao {
         List<RoomTypeBean> listRoomType = new ArrayList<>();
          
         String sql = "select * from room_types order by id";
-         
+      //String sql = "select rt.* from room_types rt left join rooms r on rt.id = r.rtid where r.h_id = " + hid + " group by rt.id order by id";
+        
+        
         connect();
          
         Statement statement = con.createStatement();
@@ -69,8 +71,10 @@ public class RoomTypeDao {
         while (resultSet.next()) {
             int id = resultSet.getInt("id");
             String type = resultSet.getString("type");
+            int adults = resultSet.getInt("adults");
+            int children = resultSet.getInt("children");
              
-            RoomTypeBean roomType = new RoomTypeBean(id, type);
+            RoomTypeBean roomType = new RoomTypeBean(id, type, adults, children);
             listRoomType.add(roomType);
         }
          

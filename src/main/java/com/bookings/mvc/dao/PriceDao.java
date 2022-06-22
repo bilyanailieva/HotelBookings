@@ -46,13 +46,14 @@ public class PriceDao {
     }
     
     public boolean insertPrice(PriceBean price) throws SQLException {
-        String sql = "insert into prices (rt_id, price_desc, price) values(?, ?, ?)";
+        String sql = "insert into prices (rt_id, price_desc, price, hid) values(?, ?, ?, ?)";
         connect();
          
         PreparedStatement statement = con.prepareStatement(sql);
-        statement.setInt(1, price.getRtid());
+        statement.setInt(1, price.getRt().getId());
         statement.setString(2, price.getPrice_desc());
         statement.setFloat(3, price.getPrice());
+        statement.setInt(4, price.getHotel().getHid());
          
         boolean rowInserted = statement.executeUpdate() > 0;
         statement.close();
@@ -60,10 +61,10 @@ public class PriceDao {
         return rowInserted;
     }
     
-    public List<PriceBean> listAllPrices() throws SQLException {
+    public List<PriceBean> listAllPrices(int hid) throws SQLException {
         List<PriceBean> listPrice = new ArrayList<>();
          
-        String sql = "select * from prices order by rt_id";
+        String sql = "select * from prices where hid = " + hid + " order by rt_id";
          
         connect();
          
@@ -78,7 +79,7 @@ public class PriceDao {
 
 
              
-            PriceBean priceObj = new PriceBean(id, rtid, description, price);
+            PriceBean priceObj = new PriceBean(id, new RoomTypeBean(rtid), description, price);
             listPrice.add(priceObj);
         }
          
@@ -96,7 +97,7 @@ public class PriceDao {
         connect();
          
         PreparedStatement statement = con.prepareStatement(sql);
-        statement.setInt(1, priceObj.getRtid());
+        statement.setInt(1, priceObj.getRt().getId());
         statement.setString(2, priceObj.getPrice_desc());
         statement.setFloat(3, priceObj.getPrice());
         statement.setInt(4, priceObj.getPid());
@@ -125,7 +126,7 @@ public class PriceDao {
             String description = resultSet.getString("price_desc");
             Float price = resultSet.getFloat("price");
              
-            priceObj = new PriceBean(pid, rtid, description, price);
+            priceObj = new PriceBean(pid, new RoomTypeBean(rtid), description, price);
         }
          
         resultSet.close();
@@ -179,7 +180,7 @@ public class PriceDao {
 
 
                  
-                PriceBean priceObj = new PriceBean(id, rtid, rt, description, price, weekend);
+                PriceBean priceObj = new PriceBean(id, rt, description, price, weekend);
                 listPrice.add(priceObj);
             }
              
@@ -201,7 +202,7 @@ public class PriceDao {
 
     			
     			String sql = "select * from room_types where adults <=" + adult_count;
-    			sql += " and children <=" + child_count;
+    			sql += " and children <=" + child_count + " or children > " + child_count;
             	connect();
                 
                 Statement statement = con.createStatement();

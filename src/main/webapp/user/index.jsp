@@ -12,7 +12,10 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
 	integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
 	crossorigin="anonymous">
-<link rel="stylesheet" href="../assets/css/login.css" />
+<link rel="stylesheet" type="text/css" href="/HotelBookings/src/main/webapp/assets/css/base/layout.css" />
+<link rel="stylesheet" type="text/css"
+	href="/HotelBookings/semantic/semantic.min.css">
+	<script src="/HotelBookings/semantic/semantic.min.js"></script>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/@event-calendar/build/event-calendar.min.css">
 <script
@@ -26,6 +29,19 @@
 	crossorigin="anonymous"></script>
 <script src="../assets/js/forms.js" type="text/javascript"></script>
 </head>
+<style>
+.ec-month .ec-event {
+	flex-direction: column;
+}
+
+.ec-month .ec-event-title {
+	white-space: unset !important;
+}
+
+.ec-event-title {
+	overflow: visible !important;
+}
+</style>
 <body>
 
 	<div class="container">
@@ -39,35 +55,38 @@
 				</c:if>
 				<legend>Check for room availability:</legend>
 				<div class="form-group">
-					<c:set var="hotel" value="${hotel }"/>
 					<label>Choose hotel:</label>
 					<select class="custom-select" id="txt_hid" name="txt_hid">
-					<c:if test="${availability != null && txt_hid != null }">
-					</c:if>
-								<c:forEach var="hotel" items="${listHotels}">
-									<option value="<c:out value='${hotel.hid}'/>">
-										<c:out value='${hotel.hotel_name}' />
-									</option>
-								</c:forEach>
-							</select>
+						<c:forEach var="hotel" items="${listHotels}">
+						<option value="<c:out value='${hotel.hid}'/>" <c:if test="${h.hid == hotel.hid }">selected</c:if> >
+								<c:out value='${hotel.hotel_name}' />
+							 </option>
+						</c:forEach>
+					</select>
 				</div>
 				<div class="form-group">
-				<c:set var="adultCount" value="${adultCount}"/>
-				<c:if test="${adultCount == null}"><c:set var="adultCount" value="${adultCount = 1}"/></c:if>
+					<c:set var="adultCount" value="${adultCount}" />
+					<c:if test="${adultCount == null}">
+						<c:set var="adultCount" value="${adultCount = 1}" />
+					</c:if>
 					<label>Adults:</label> <input type="number" class="form-control"
 						id="adultCount" name="adultCount" value="${adultCount }" min="1"
 						<c:if test="${adultCount != null && availability !=null }"> disabled </c:if>>
 				</div>
 				<div class="form-group">
-				<c:set var="childCount" value="${childCount}"/>
-				<c:if test="${childCount == null}"><c:set var="childCount" value="${childCount = 0}"/></c:if>
+					<c:set var="childCount" value="${childCount}" />
+					<c:if test="${childCount == null}">
+						<c:set var="childCount" value="${childCount = 0}" />
+					</c:if>
 					<label>Children:</label> <input type="number" class="form-control"
 						id="childCount" name="childCount" value="${childCount }" min="0"
 						<c:if test="${childCount != null && availability !=null}">disabled</c:if>>
 				</div>
 				<div class="form-group">
-				<c:set var="roomCount" value="${roomCount}"/>
-				<c:if test="${roomCount == null}"><c:set var="roomCount" value="${roomCount = 1}"/></c:if>
+					<c:set var="roomCount" value="${roomCount}" />
+					<c:if test="${roomCount == null}">
+						<c:set var="roomCount" value="${roomCount = 1}" />
+					</c:if>
 					<label>Rooms:</label> <input type="number" class="form-control"
 						id="roomCount" name="roomCount" value="${roomCount }" min="1"
 						<c:if test="${roomCount != null && availability !=null}">disabled</c:if>>
@@ -111,20 +130,22 @@
 						<input type="hidden" name="arrivalDate" value="${arrivalDate}">
 						<input type="hidden" name="departureDate" value="${departureDate}">
 						<div class="form-group">
-							<label>Price predictions:</label>
-							<select class="custom-select" size="${roomCount }" name="priceOption" multiple>
-						<c:forEach var="item" items="${prices}" varStatus="loopStatus">
-							<option value="${item.pid }">
-							<c:out value="${item.type.type}/${item.price_desc }: ${item.price}" />
-							</option>
-						</c:forEach>
-						</select>
+							<label>Price predictions:</label> <select class="custom-select"
+								size="${roomCount }" name="priceOption" multiple>
+								<c:forEach var="item" items="${prices}" varStatus="loopStatus">
+									<option value="${item.pid }">
+										<c:out
+											value="${item.rt.type}/${item.price_desc }: ${item.price}" />
+									</option>
+								</c:forEach>
+							</select>
 						</div>
 						<div class="form-group">
-						<label>Contact Email:</label> <input type="email"
-						class="form-control" id="email" name="email" />
+							<label>Contact Email:</label> <input type="email"
+								class="form-control" id="email" name="email" />
 						</div>
-						<input type="submit" class="btn btn-primary" value="Make a reservation request"/>
+						<input type="submit" class="btn btn-primary"
+							value="Make a reservation request" />
 					</c:if>
 					<c:if test="${contains == true}">
 						<p>
@@ -145,9 +166,8 @@
 
 		<input type="hidden" id="listConfirmed" value="${listConfirmed}">
 		<input type="hidden" id="availability" name="availability"
-			value="${availability}">
-			<input type="hidden" id="prices" name="prices"
-			value="${prices}">
+			value="${availability}"> <input type="hidden" id="prices"
+			name="prices" value="${prices}">
 
 
 
@@ -193,10 +213,10 @@
 		        }
 		        var events = [];
 		        for (let j = 0; j < (days.length - 1); j++) {
-		        	if(aval[j] > total/2 && aval[j] < total){
+		        	if(aval[j] > total/2 && aval[j] <= total){
 		        		color = "#00FF00";
 		        	}else if(aval[j] < total/2 && aval[j] != 0) {
-		        		color = "#FFFF00";
+		        		color = "#ffa500";
 		        	}else if(aval[j] == 0) {
 		        		color = "#FF0000";
 		        	}
@@ -233,8 +253,8 @@
 		  validateForm();
 		  });
 		</script>
-		
-		<script type="text/javascript">
+
+	<script type="text/javascript">
 			
 		</script>
 </body>
